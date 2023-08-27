@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      'sans': ['Changa', 'ui-sans-serif',],
+    }
   },
   plugins: [],
 }
