@@ -1,6 +1,12 @@
+import NavShop from "../components/NavShop.jsx"
+import ShowProducts from "../components/ShowProducts.jsx"
+
 function Shop() {
     return (
-        <h1>Shop</h1>
+        <>
+            <NavShop />
+            <ShowProducts />
+        </>
     )
 }
 export default Shop
