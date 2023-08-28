@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import NavShop from "../components/NavShop.jsx"
-import Product from "../components/Product.jsx";
+import ProductDetail from "../components/ProductDetail.jsx";
 
 function ViewProduct() {
     const params = useParams();
@@ -8,8 +8,7 @@ function ViewProduct() {
     return (
         <>
             <NavShop />
-            <Product />
-            <h1>{params.productId}</h1>
+            <ProductDetail productId={params.productId} />
         </>
 
     )
