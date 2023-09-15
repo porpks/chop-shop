@@ -1,48 +1,27 @@
 import data from '../data.json'
-import { useState } from 'react'
 
 function ProductDetail(props) {
-    // eslint-disable-next-line react/prop-types
     const product = data[props.productId - 1]
-    const [imageIndex, setImageIndex] = useState(0)
-
-    const handlePrevImage = () => {
-        if (imageIndex === 0) {
-            setImageIndex(product.images.length - 1)
-        } else {
-            setImageIndex(imageIndex - 1)
-        }
-    }
-    const handleNextImage = () => {
-        if (imageIndex === (product.images.length - 1)) {
-            setImageIndex(0)
-        } else {
-            setImageIndex(imageIndex + 1)
-        }
-    }
     return (
         <div className='px-48 pt-12'>
 
             <div className='flex w-full h-[540px] shadow-xl'>
                 {/* image box */}
-                <div className='flex flex-col justify-center w-2/5 relative'>
-                    <div className='flex justify-center items-center p-4 overflow-hidden'>
-                        <img src={product.images[imageIndex]} className='max-w-full max-h-[480px]' />
+                <div className='flex flex-col w-2/5'>
+                    <div className='flex justify-center items-center h-2/3 p-4 overflow-hidden'>
+                        <img src={product.images[0]} />
                     </div>
 
-                    {product.images.length > 1 ?
-                        <>
-                            <button className='absolute left-4 text-xl text-white bg-[rgba(0,0,0,0.8)] px-1 rounded'
-                                onClick={handlePrevImage}>
-                                <i className="fa-solid fa-angle-left"></i>
-                            </button>
-                            <button className='absolute right-4 text-xl text-white bg-[rgba(0,0,0,0.8)] px-1 rounded'
-                                onClick={handleNextImage}>
-                                <i className="fa-solid fa-angle-right"></i>
-                            </button>
-                        </> :
-                        null}
+                    <div className='min-w-full h-1/3 overflow-x-auto'>
+                        {product.images.map((image, index) => {
+                            return (
+                                <span key={index} className='w-1/4 h-4/5 mx-2 inline'>
+                                    <img src={image} className='min-h-full min-w-full object-cover' />
+                                </span>
 
+                            )
+                        })}
+                    </div>
                 </div>
 
                 {/* detail box */}
