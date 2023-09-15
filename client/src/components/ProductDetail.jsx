@@ -1,7 +1,11 @@
+/* eslint-disable react/prop-types */
 import data from '../data.json'
+import { context } from '../contexts/AppContext'
 
 function ProductDetail(props) {
     const product = data[props.productId - 1]
+    const { cart, setCart } = context()
+
     return (
         <div className='px-48 pt-12'>
 
@@ -62,7 +66,12 @@ function ProductDetail(props) {
                             </h1>
                         </div>
                     }
-                    <button className=' bg-black w-96 mt-4 p-2 text-white text-lg rounded active:text-gray-400 active:scale-95'>
+                    <button className=' bg-black w-96 mt-4 p-2 text-white text-lg rounded active:text-gray-400 active:scale-95'
+                        onClick={() => {
+                            const newCart = cart
+                            newCart.push(product)
+                            setCart(newCart)
+                        }}>
                         Add to cart
                     </button>
                 </div>
