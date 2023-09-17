@@ -7,14 +7,15 @@ import axios from 'axios'
 function ShowProducts() {
     const { apiEndpoint } = context()
     const heading = "All Product"
-    const [categories, setCategories] = useState([])
-    const [brands, setBrands] = useState([])
-    const [products, setProducts] = useState([])
     const [keywords, setKeywords] = useState("")
-    const [brand, setBrand] = useState("")
+    const [products, setProducts] = useState([])
     const [category, setCategory] = useState("")
+    const [categories, setCategories] = useState([])
+    const [brand, setBrand] = useState("")
+    const [brands, setBrands] = useState([])
     const [page, setPage] = useState(1)
-    const [totalPage, setTotalPage] = useState(0)
+    const [pages, setPages] = useState([])
+    const pageNumbers = [];
 
     const getProducts = async () => {
         try {
@@ -30,7 +31,12 @@ function ShowProducts() {
             setProducts(result.data.data)
             setCategories(result.data.categories)
             setBrands(result.data.brands)
-            setTotalPage(result.data.totalPage)
+
+            if (pages.length === 0) {
+                for (let i = 1; i <= result.data.totalPage; i++) {
+                    pages.push(i);
+                }
+            }
         } catch (error) {
             alert(error)
         }
@@ -56,7 +62,7 @@ function ShowProducts() {
 
     useEffect(() => {
         getProducts()
-    }, [])
+    }, [page])
 
     return (
         <div className='flex justify-center px-24'>
@@ -94,6 +100,30 @@ function ShowProducts() {
                         )
                     })}
 
+                </div>
+                <div className='flex justify-center items-center mb-6 space-x-4'>
+                    {page > 1 ?
+                        <button className='text-3xl  w-8 h-8 rounded active:text-gray-300'
+                            onClick={() => setPage(page - 1)}>
+                            {'<'}
+                        </button>
+                        : null}
+                    {pages.map((number, index) => {
+                        return (
+                            <button key={index}
+                                className={`w-8 h-10 rounded ${number === page ? 'bg-slate-100 font-semibold ring ring-black drop-shadow-xl' : "bg-black text-white"}`}
+                                onClick={() => setPage(number)}
+                            >
+                                {number}
+                            </button>
+                        )
+                    })}
+                    {page < pages.length ?
+                        <button className='text-3xl  w-8 h-8 rounded active:text-gray-300'
+                            onClick={() => setPage(page + 1)}>
+                            {'>'}
+                        </button>
+                        : null}
                 </div>
             </div>
 
