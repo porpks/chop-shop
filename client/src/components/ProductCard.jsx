@@ -5,7 +5,9 @@ import { context } from '../contexts/AppContext'
 function ProductCard(props) {
     const navigate = useNavigate()
     const { cart, setCart } = context()
+
     return (
+
         <div className='bg-white w-56 h-[340px] m-4 flex flex-col drop-shadow-2xl'>
             <div className='w-full max-h-28 overflow-hidden hover:scale-105 hover:rounded duration-300 relative'>
                 <img src={props.product.thumbnail} className='min-w-full' />

@@ -5,7 +5,7 @@ import { context } from '../contexts/AppContext'
 import axios from 'axios'
 
 function ShowProducts() {
-    const { apiEndpoint } = context()
+    const { apiEndpoint, hadleStars } = context()
     const heading = "All Product"
     const [keywords, setKeywords] = useState("")
     const [products, setProducts] = useState([])
@@ -15,7 +15,6 @@ function ShowProducts() {
     const [brands, setBrands] = useState([])
     const [page, setPage] = useState(1)
     const [pages, setPages] = useState([])
-    const pageNumbers = [];
 
     const getProducts = async () => {
         try {
@@ -42,23 +41,7 @@ function ShowProducts() {
         }
     }
 
-    const hadleStars = (rating) => {
-        let stars = []
-        for (let i = 0; i < 5; i++) {
-            if (rating >= 1) {
-                stars.push("fa-solid fa-star")
-                rating -= 1
-            }
-            else if (rating >= 0.5) {
-                stars.push("fa-solid fa-star-half-stroke")
-                rating -= 0.5
-            }
-            else {
-                stars.push("fa-regular fa-star")
-            }
-        }
-        return stars
-    }
+
 
     useEffect(() => {
         getProducts()
@@ -111,7 +94,7 @@ function ShowProducts() {
                     {pages.map((number, index) => {
                         return (
                             <button key={index}
-                                className={`w-8 h-10 rounded ${number === page ? 'bg-slate-100 font-semibold ring ring-black drop-shadow-xl' : "bg-black text-white"}`}
+                                className={`w-8 h-10 rounded ${number === page ? 'bg-slate-100 font-semibold ring ring-black drop-shadow-xl' : "bg-black text-white"} active:scale-95`}
                                 onClick={() => setPage(number)}
                             >
                                 {number}
