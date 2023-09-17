@@ -5,9 +5,8 @@ import { context } from '../contexts/AppContext'
 function NavShop() {
     const navigate = useNavigate()
     const { cart, setCart } = context()
-
-    console.log(cart);
     const [isShowCart, setIsShowCard] = useState(false)
+
     return (
         <div className="flex justify-between items-center px-24 py-5 bg-black text-white">
             <h1 className="text-4xl font-bold cursor-pointer hover:drop-shadow-[0px_0px_10px_rgba(250,250,250,0.5)]"
@@ -16,11 +15,11 @@ function NavShop() {
             </h1>
             <div className="relative" onClick={() => setIsShowCard(true)}>
                 <i className="fa-solid fa-cart-shopping text-2xl cursor-pointer hover:drop-shadow-[0px_0px_10px_rgba(250,250,250,0.5)]"></i>
-                {cart.length > 0 ?
-                    <div className="w-6 h-6 bg-red-500 flex justify-center items-center rounded-full absolute -bottom-2 -right-3">
-                        {cart.length > 9 ? "9+" : cart.length}
-                    </div>
-                    : null}
+
+                {cart.length > 0 ? <div className="w-6 h-6 bg-red-500 flex justify-center items-center rounded-full absolute -bottom-2 -right-3">
+                    {cart.length > 9 ? "9+" : cart.length}
+                </div> : null}
+
             </div>
 
             {/* cart */}

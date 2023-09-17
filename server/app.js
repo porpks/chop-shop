@@ -1,5 +1,6 @@
 import express from "express";
-import bodyParser from "body-parser";
+// import bodyParser from "body-parser";
+import cors from 'cors'
 import productRouter from "./apps/product.js";
 import { client } from "./utils/db.js";
 
@@ -10,7 +11,8 @@ async function init() {
     await client.connect();
     console.log("------- connecting to MongoDB successfully -------");
 
-    app.use(bodyParser.json());
+    // app.use(bodyParser.json());
+    app.use(cors())
     app.use('/product', productRouter)
 
     app.get('/', (req, res) => {

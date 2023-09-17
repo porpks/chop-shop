@@ -1,20 +1,41 @@
-import data from '../data.json'
+// import products from '../data.json'
 import ProductCard from './ProductCard.jsx'
-// import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { context } from '../contexts/AppContext'
+import axios from 'axios'
 
 function ShowProducts() {
+    const { apiEndpoint } = context()
     const heading = "All Product"
-    const categories = []
-    const brands = []
+    const [categories, setCategories] = useState([])
+    const [brands, setBrands] = useState([])
+    const [products, setProducts] = useState([])
+    const [keywords, setKeywords] = useState("")
+    const [brand, setBrand] = useState("")
+    const [category, setCategory] = useState("")
+    const [page, setPage] = useState(1)
+    const [totalPage, setTotalPage] = useState(0)
 
-    for (let i of data) {
-        if (!categories.includes(i.category)) {
-            categories.push(i.category)
-        }
-        if (!brands.includes(i.brand)) {
-            brands.push(i.brand)
+    const getProducts = async () => {
+        try {
+            const result = await axios.get(`${apiEndpoint}/product/`
+                , {
+                    params: {
+                        keywords,
+                        brand,
+                        category,
+                        page,
+                    }
+                })
+            setProducts(result.data.data)
+            setCategories(result.data.categories)
+            setBrands(result.data.brands)
+            setTotalPage(result.data.totalPage)
+        } catch (error) {
+            alert(error)
         }
     }
+
     const hadleStars = (rating) => {
         let stars = []
         for (let i = 0; i < 5; i++) {
@@ -32,12 +53,17 @@ function ShowProducts() {
         }
         return stars
     }
+
+    useEffect(() => {
+        getProducts()
+    }, [])
+
     return (
         <div className='flex justify-center px-24'>
             {/* categories */}
             <div className='w-1/5 px-4 pt-20'>
                 <h1 className='text-2xl'>Category</h1>
-                <div className='pl-4 pt-2 leading-6'>
+                <div className='pl-4 pt-2 leading-6 h-[400px] overflow-y-scroll'>
                     {categories.map((item, index) => {
                         return (
                             <h1 key={index} className='text-xl text-slate-700 cursor-pointer hover:underline'>{item}</h1>
@@ -45,7 +71,7 @@ function ShowProducts() {
                     })}
                 </div>
                 <h1 className='text-2xl mt-4'>Brand</h1>
-                <div className='pl-4 pt-2 leading-6'>
+                <div className='pl-4 pt-2 leading-6 h-[400px] overflow-y-scroll'>
                     {brands.map((item, index) => {
                         return (
                             <h1 key={index} className='text-xl text-slate-700 cursor-pointer hover:underline'>{item}</h1>
@@ -55,12 +81,12 @@ function ShowProducts() {
             </div>
 
             {/* product */}
-            <div className='flex flex-col w-4/5'>
+            <div className='flex flex-col items-center w-4/5'>
                 <h1 className='pt-8 ml-4 text-3xl font-semibold'>{heading}</h1>
                 <div className='pt-4 flex justify-center flex-wrap'>
 
                     {/* map product */}
-                    {data.map((item, index) => {
+                    {products.map((item, index) => {
                         let showStar = hadleStars(item.rating)
 
                         return (

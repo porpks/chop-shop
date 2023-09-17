@@ -5,7 +5,6 @@ import { context } from '../contexts/AppContext'
 function ProductCard(props) {
     const navigate = useNavigate()
     const { cart, setCart } = context()
-    console.log(cart);
     return (
         <div className='bg-white w-56 h-[340px] m-4 flex flex-col drop-shadow-2xl'>
             <div className='w-full max-h-28 overflow-hidden hover:scale-105 hover:rounded duration-300 relative'>
@@ -48,11 +47,7 @@ function ProductCard(props) {
                 }
             </div>
             <button className='absolute bottom-0 bg-black w-[96%] m-1 p-2 text-white text-lg rounded active:text-gray-400 active:scale-95'
-                onClick={() => {
-                    const newCart = cart
-                    newCart.push(props.product)
-                    setCart(newCart)
-                }}>
+                onClick={() => setCart((prevCart) => [...prevCart, props.product])}>
                 Add to cart
             </button>
         </div>

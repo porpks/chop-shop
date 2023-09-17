@@ -5,10 +5,12 @@ import React, { useState } from 'react'
 const AppContext = React.createContext();
 
 function AppContextProvider(props) {
+    const apiEndpoint = "http://localhost:3000"
     const [cart, setCart] = useState([])
     return (
         <AppContext.Provider
             value={{
+                apiEndpoint,
                 cart,
                 setCart,
             }}>

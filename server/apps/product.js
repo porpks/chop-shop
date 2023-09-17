@@ -27,16 +27,20 @@ const collection = db.collection("products");
 productRouter.get('/', async (req, res) => {
     const keywords = req.query.keywords;
     const brand = req.query.brand;
+    const category = req.query.category;
     const page = Number(req.query.page);
-    const pageSize = 20;
+    const pageSize = 12;
     const skip = pageSize * (page - 1);
 
     const query = {}
     if (keywords) {
         query.title = new RegExp(`${keywords}`, "i");
     }
-    if (keywords) {
+    if (brand) {
         query.brand = brand;
+    }
+    if (category) {
+        query.brand = category;
     }
 
     const result = await collection
@@ -45,9 +49,11 @@ productRouter.get('/', async (req, res) => {
         .limit(pageSize)
         .toArray()
 
+    const categories = await collection.distinct("category")
+    const brands = await collection.distinct("brand")
     const count = await collection.countDocuments(query);
 
-    res.json({ data: result, totalPage: Math.ceil(count / pageSize) })
+    res.json({ data: result, categories, brands, totalPage: Math.ceil(count / pageSize) })
 })
 
 productRouter.get('/:productId', async (req, res) => {
