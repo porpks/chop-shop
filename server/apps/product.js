@@ -29,7 +29,7 @@ productRouter.get('/', async (req, res) => {
     const brand = req.query.brand;
     const category = req.query.category;
     const page = Number(req.query.page);
-    const pageSize = 12;
+    const pageSize = 20;
     const skip = pageSize * (page - 1);
 
     const query = {}
@@ -40,7 +40,7 @@ productRouter.get('/', async (req, res) => {
         query.brand = brand;
     }
     if (category) {
-        query.brand = category;
+        query.category = category;
     }
 
     const result = await collection

@@ -6,7 +6,7 @@ import axios from 'axios'
 
 function ShowProducts() {
     const { apiEndpoint, hadleStars } = context()
-    const heading = "All Product"
+    const heading = "Products"
     const [keywords, setKeywords] = useState("")
     const [products, setProducts] = useState([])
     const [category, setCategory] = useState("")
@@ -41,11 +41,9 @@ function ShowProducts() {
         }
     }
 
-
-
     useEffect(() => {
         getProducts()
-    }, [page])
+    }, [page, category, brand, keywords])
 
     return (
         <div className='flex justify-center px-24'>
@@ -55,7 +53,8 @@ function ShowProducts() {
                 <div className='pl-4 pt-2 leading-6 h-[400px] overflow-y-scroll'>
                     {categories.map((item, index) => {
                         return (
-                            <h1 key={index} className='text-xl text-slate-700 cursor-pointer hover:underline'>{item}</h1>
+                            <h1 key={index} className='text-xl text-slate-700 cursor-pointer hover:underline'
+                                onClick={() => setCategory(item)}>{item}</h1>
                         )
                     })}
                 </div>
@@ -63,7 +62,8 @@ function ShowProducts() {
                 <div className='pl-4 pt-2 leading-6 h-[400px] overflow-y-scroll'>
                     {brands.map((item, index) => {
                         return (
-                            <h1 key={index} className='text-xl text-slate-700 cursor-pointer hover:underline'>{item}</h1>
+                            <h1 key={index} className='text-xl text-slate-700 cursor-pointer hover:underline'
+                                onClick={() => setBrand(item)}>{item}</h1>
                         )
                     })}
                 </div>
@@ -71,19 +71,42 @@ function ShowProducts() {
 
             {/* product */}
             <div className='flex flex-col items-center w-4/5'>
-                <h1 className='pt-8 ml-4 text-3xl font-semibold'>{heading}</h1>
-                <div className='pt-4 flex justify-center flex-wrap'>
-
-                    {/* map product */}
-                    {products.map((item, index) => {
-                        let showStar = hadleStars(item.rating)
-
-                        return (
-                            <ProductCard key={index} product={item} star={showStar} />
-                        )
-                    })}
+                <div className='w-1/2 pt-8'>
+                    <input className='w-full text-center px-2 py-1 border rounded focus:outline-none'
+                        type='text'
+                        placeholder='Search product'
+                        onChange={(e) => setKeywords(e.target.value)}
+                    />
+                </div>
+                <div className='p-2 flex space-x-2'>
+                    {brand ?
+                        <div className='h-6 px-1 flex text-slate-700 bg-slate-200'>
+                            {brand}
+                            <div className='ml-1 text-black hover:text-gray-500 cursor-pointer' onClick={() => setBrand('')}>x</div>
+                        </div>
+                        : <div className='h-6'></div>
+                    }
+                    {category ?
+                        <div className='h-6 px-1 flex text-slate-700 bg-slate-200'>
+                            {category}
+                            <div className='ml-1 text-black hover:text-gray-500 cursor-pointer' onClick={() => setCategory('')}>x</div>
+                        </div>
+                        : <div className='h-6'></div>}
 
                 </div>
+                <h1 className='pt-6 ml-4 text-3xl font-semibold'>{heading}</h1>
+                <div className='w-full'>
+                    <div className='pt-4 flex justify-start flex-wrap'>
+                        {/* map product */}
+                        {products.map((item, index) => {
+                            let showStar = hadleStars(item.rating)
+                            return (
+                                <ProductCard key={index} product={item} star={showStar} />
+                            )
+                        })}
+                    </div>
+                </div>
+
                 <div className='flex justify-center items-center mb-6 space-x-4'>
                     {page > 1 ?
                         <button className='text-3xl  w-8 h-8 rounded active:text-gray-300'
